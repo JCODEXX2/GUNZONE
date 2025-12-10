@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile - PistolsZone</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #e5e5e5;
+        color: #0d1b2a;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    header {
+        text-align: center;
+        padding: 40px 20px;
+        background: #0d1b2a;
+        color: white;
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: fadeDown 0.8s forwards;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 2.8rem;
+        font-weight: 700;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        padding: 15px 0;
+        background: #1b263b;
+        align-items: center;
+    }
+
+    nav a, .user-badge-link {
+        text-decoration: none;
+        color: #e0e1dd;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: 0.3s;
+    }
+
+    nav a:hover, .user-badge-link:hover {
+        color: #778da9;
+    }
+
+    main {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .profile-container {
+        width: 90%;
+        max-width: 600px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.6s 0.4s forwards;
+    }
+
+    .profile-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #2b7cff;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 20px auto;
+    }
+
+    .profile-name {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .profile-email {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 25px;
+    }
+
+    .info-input {
+        width: 100%;
+        padding: 14px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #bfc4cf;
+        font-size: 1rem;
+        box-sizing: border-box;
+        transition: 0.25s;
+    }
+
+    .info-input:focus {
+        border-color: #2b7cff;
+        box-shadow: 0 0 5px rgba(43,124,255,0.5);
+        outline: none;
+    }
+
+    #save-btn, #logout-btn {
+        width: 100%;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 15px;
+    }
+
+    #save-btn {
+        background: linear-gradient(135deg, #2b7cff, #5591ff);
+        color: white;
+        box-shadow: 0 4px 15px rgba(43, 124, 255, 0.4);
+    }
+
+    #save-btn:hover {
+        background: linear-gradient(135deg, #5591ff, #2b7cff);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(43, 124, 255, 0.6);
+    }
+
+    #logout-btn {
+        background: linear-gradient(135deg, #ff4e4e, #ff7b7b);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 78, 78, 0.4);
+    }
+
+    #logout-btn:hover {
+        background: linear-gradient(135deg, #ff7b7b, #ff4e4e);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 78, 78, 0.6);
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px 0;
+        background: #0d1b2a;
+        color: #e0e1dd;
+        margin-top: auto;
+    }
+
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<script>
+    const user = localStorage.getItem('loggedInUser');
+    if (!user) window.location.href = 'login.html';
+</script>
+
+<header>
+    <h1>PistolsZone</h1>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="pistols.html">Pistols</a>
+    <a href="contact.html">Contact</a>
+    <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+</nav>
+
+<main>
+    <div class="profile-container">
+        <div class="profile-circle" id="profile-initial">U</div>
+        <div class="profile-name" id="profile-name">Username</div>
+        <div class="profile-email" id="profile-email">user@example.com</div>
+
+        <!-- Editable fields -->
+        <input type="text" class="info-input" id="input-fullname" placeholder="Full Name">
+        <input type="email" class="info-input" id="input-email" placeholder="Email Address">
+        <input type="text" class="info-input" id="input-address" placeholder="Address">
+        <input type="text" class="info-input" id="input-phone" placeholder="Phone Number">
+
+        <button id="save-btn">Save</button>
+        <button id="logout-btn">Logout</button>
+    </div>
+</main>
+
+<footer>
+    <p>© 2025 PistolsZone</p>
+</footer>
+
+<script>
+    // Populate initial info
+    if (user) {
+        const profileInitial = document.getElementById('profile-initial');
+        const profileName = document.getElementById('profile-name');
+        const profileEmail = document.getElementById('profile-email');
+
+        profileInitial.textContent = user[0].toUpperCase();
+        profileName.textContent = user;
+
+        const storedInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+        document.getElementById('input-fullname').value = storedInfo.fullname || '';
+        document.getElementById('input-email').value = storedInfo.email || `${user}@example.com`;
+        document.getElementById('input-address').value = storedInfo.address || '';
+        document.getElementById('input-phone').value = storedInfo.phone || '';
+
+        profileEmail.textContent = storedInfo.email || `${user}@example.com`;
+    }
+
+    // Save button
+    document.getElementById('save-btn').addEventListener('click', () => {
+        const info = {
+            fullname: document.getElementById('input-fullname').value,
+            email: document.getElementById('input-email').value,
+            address: document.getElementById('input-address').value,
+            phone: document.getElementById('input-phone').value
+        };
+        localStorage.setItem('userInfo', JSON.stringify(info));
+
+        document.getElementById('profile-name').textContent = info.fullname || user;
+        document.getElementById('profile-email').textContent = info.email || `${user}@example.com`;
+        document.getElementById('profile-initial').textContent = (info.fullname || user)[0].toUpperCase();
+
+        alert('Profile information saved!');
+    });
+
+    // Logout button
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('loggedInUser');
+        window.location.href = 'login.html';
+    });
+
+    // Update cart count
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        document.querySelector('nav a[href="cart.html"] span').textContent = totalItems;
+    }
+
+    updateCartCount();
+</script>
+
+</body>
+</html>
